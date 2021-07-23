@@ -12,6 +12,7 @@ struct studySwiftUIApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+            todoList()
         }
     }
 }
