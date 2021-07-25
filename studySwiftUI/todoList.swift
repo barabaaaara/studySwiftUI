@@ -9,7 +9,7 @@ import SwiftUI
 
 struct todoList: View {
     @State var newItem : String = ""
-    @State var toDOList : [String] = ["買い物","選択"]
+    @State var toDoList : [String] = ["買い物","選択"]
     var body: some View {
         VStack {
             HStack {
@@ -24,8 +24,9 @@ struct todoList: View {
                     .frame(width:300)
                 
                 Button(action: {
-                    self.toDOList.append(self.newItem)
+                    self.toDoList.append(self.newItem)
                     self.newItem = ""
+                    UserDefaults.standard.set(self.toDoList, forKey: "ToDoList")
                 }){
                     ZStack{
                         RoundedRectangle(cornerRadius:5)
@@ -44,13 +45,17 @@ struct todoList: View {
                 Spacer()
             }
             List{
-                ForEach(toDOList, id:\.self) { item in
+                ForEach(toDoList, id:\.self) { item in
                     Text(item)
                 }.onDelete{ (IndexSet) in
-                self.toDOList.remove(atOffsets: IndexSet)
+                self.toDoList.remove(atOffsets: IndexSet)
                 }
             }
             Spacer()
+        }.onAppear(){
+            guard let defaultItem = UserDefaults.standard.array(forKey: "ToDoList") as?[String]
+            else{return}
+            self.toDoList = defaultItem
         }
     }
     
